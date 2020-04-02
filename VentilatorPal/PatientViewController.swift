@@ -294,6 +294,7 @@ class PatientViewController: UITableViewController{
                     newPatient.respiratoryRate = Int16(self.patientData.respiratoryRate)
                     newPatient.deviceName = self.deviceName
                     newPatient.deviceAddress = self.deviceAddress
+                    self.patient = newPatient
                 },
                 completion: { _ in
                 }
