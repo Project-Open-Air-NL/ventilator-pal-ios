@@ -107,6 +107,15 @@ class PatientViewController: UITableViewController{
         }
         patientData.updateCalcValues()
         
+        if let deviceAddress = self.deviceAddress {
+            VentilatorInterface.shared.connect(uuid: deviceAddress) { (success: Bool) in
+                if (success) {
+                    VentilatorInterface.shared.getSettings()
+                    VentilatorInterface.shared.disconnectWhenDone()
+                }
+            }
+        }
+        
         if #available(iOS 13.0, *) {
             spinner.style = .medium
         } else {
