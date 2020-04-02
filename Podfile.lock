@@ -1,0 +1,37 @@
+PODS:
+  - ActionSheetPicker-3.0 (2.3.0)
+  - AppCenter (2.5.0):
+    - AppCenter/Analytics (= 2.5.0)
+    - AppCenter/Crashes (= 2.5.0)
+  - AppCenter/Analytics (2.5.0):
+    - AppCenter/Core
+  - AppCenter/Core (2.5.0)
+  - AppCenter/Crashes (2.5.0):
+    - AppCenter/Core
+  - CoreStore (6.3.0)
+  - SwiftMessages (7.0.1):
+    - SwiftMessages/App (= 7.0.1)
+  - SwiftMessages/App (7.0.1)
+
+DEPENDENCIES:
+  - ActionSheetPicker-3.0
+  - AppCenter
+  - CoreStore (= 6.3.0)
+  - SwiftMessages
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - ActionSheetPicker-3.0
+    - AppCenter
+    - CoreStore
+    - SwiftMessages
+
+SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: eef157d75e151f255c5333d26656c7fbfe905a51
+  AppCenter: 637f180deefc61e8ab3f94223869ee50f61dabea
+  CoreStore: fd104813dc2260fb959c97c1471ff7a64d553c92
+  SwiftMessages: b577dc7043be8b299857ab35bb663dbff6483bd0
+
+PODFILE CHECKSUM: aa65daf03e0e123f1527d9a794aac29b591a4582
+
+COCOAPODS: 1.9.1
