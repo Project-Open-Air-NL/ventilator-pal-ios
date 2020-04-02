@@ -138,6 +138,7 @@ class PatientViewController: UITableViewController{
         super.viewWillDisappear(animated)
         
         VentilatorInterface.shared.stopScan()
+        VentilatorInterface.shared.disconnect()
     }
     
     @objc private func receiveNotification (_ notification: Foundation.Notification) {
@@ -327,14 +328,17 @@ class PatientViewController: UITableViewController{
         }
      
         if let deviceAddress = self.deviceAddress {
-            VentilatorInterface.shared.connect(uuid: deviceAddress) { (success: Bool) in
+            VentilatorInterface.shared.connect(uuid: deviceAddress) { [weak self] (success: Bool) in
+                guard self != nil else {
+                    return
+                }
                 if (success) {
-                    VentilatorInterface.shared.writeSettings(self.patientData)
+                    VentilatorInterface.shared.writeSettings(self!.patientData)
                     VentilatorInterface.shared.disconnectWhenDone()
 
                     Message.success(title: "Done", message: "Settings saved")
                     
-                    self.navigationController?.popViewController(animated: true)
+                    self!.navigationController?.popViewController(animated: true)
                 } else {
                     Message.alert(title: "Connection failed", message: "Could not find ventilator")
                 }

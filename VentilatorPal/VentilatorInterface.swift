@@ -37,7 +37,8 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
     
     var connectCallback: ((Bool)->())?
     var didConnect = false
-
+    var connectTimer: Timer?
+    
     struct Settings {
         
         enum Gender: Int {
@@ -120,10 +121,8 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
                                         object: self,
                                         userInfo: nil)
         
-        Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { (_) in
-            if !self.didConnect {
-                self.connectCallback?(false)
-            }
+        connectTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { (_) in
+            self.connectCallback?(false)
         }
     }
     
@@ -214,7 +213,7 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
         
         connectCallback?(true)
         connectCallback = nil
-        didConnect = true
+        connectTimer?.invalidate()
     }
     func peripheralDidDisconnect(_ peripheral: CBPeripheral) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: VentilatorInterface.DidDisconnect),
