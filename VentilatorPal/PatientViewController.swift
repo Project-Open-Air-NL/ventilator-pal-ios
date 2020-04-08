@@ -334,11 +334,12 @@ class PatientViewController: UITableViewController{
                 }
                 if (success) {
                     VentilatorInterface.shared.writeSettings(self!.patientData)
-                    VentilatorInterface.shared.disconnectWhenDone()
+                    VentilatorInterface.shared.disconnectWhenDone {
+                        self!.navigationController?.popViewController(animated: true)
+                    }
 
                     Message.success(title: "Done", message: "Settings saved")
                     
-                    self!.navigationController?.popViewController(animated: true)
                 } else {
                     Message.alert(title: "Connection failed", message: "Could not find ventilator")
                 }

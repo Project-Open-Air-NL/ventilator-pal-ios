@@ -36,7 +36,7 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
     let OP_FAULT: UInt8 = 225
     
     var connectCallback: ((Bool)->())?
-    var didConnect = false
+    var doneCallback: ((Bool)->())?
     var connectTimer: Timer?
     
     struct Settings {
@@ -114,7 +114,6 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
     public func connect(uuid: String, callback: @escaping (Bool)->()) {
         BLEManager.sharedInstance.cachedUUID = uuid
         BLEManager.sharedInstance.scanPeripherals()
-        didConnect = false
         connectCallback = callback
 
         NotificationCenter.default.post(name: Notification.Name(rawValue: VentilatorInterface.IsConnecting),
@@ -126,13 +125,15 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
         }
     }
     
-    public func disconnectWhenDone() {
+    public func disconnectWhenDone(callback: (()->())? = nil) {
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { (timer: Timer) in
             if BLEManager.sharedInstance.isConnected() && !BLEManager.sharedInstance.isEmptyQueue {
                 //keep checking
             } else {
                 BLEManager.sharedInstance.disconnect()
                 timer.invalidate()
+                
+                callback?()
             }
         }
         

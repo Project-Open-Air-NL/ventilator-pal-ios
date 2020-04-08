@@ -35,7 +35,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var delegate: BLEManagerDelegate?
     
     fileprivate var isSendingQueue = false
-    fileprivate var isWaitingForWriteResponse = false
+    var isWaitingForWriteResponse = false
     
     fileprivate var writeQueue = [(BLECharacteristicKey, Data, Bool)]()
     
@@ -300,7 +300,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                     if key == .write {
                         writeQueue.removeAll()
                         
-                        self.delegate?.peripheralDidConnect(peripheral)                        
+                        self.delegate?.peripheralDidConnect(peripheral)
                     } 
                 
                     if (characteristic.properties.rawValue & CBCharacteristicProperties.indicate.rawValue) != 0 ||
