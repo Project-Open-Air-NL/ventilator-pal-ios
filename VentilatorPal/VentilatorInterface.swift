@@ -122,6 +122,7 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
         
         connectTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: false) { (_) in
             self.connectCallback?(false)
+            BLEManager.sharedInstance.stopScan()
         }
     }
     
