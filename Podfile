@@ -12,6 +12,7 @@ def common_pods
   pod 'ActionSheetPicker-3.0'
   pod 'SwiftMessages'
   pod 'AppCenter'
+  pod 'DeviceKit'
 end
 
 target 'VentilatorPal' do
