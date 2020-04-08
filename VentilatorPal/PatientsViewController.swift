@@ -83,7 +83,7 @@ class PatientsViewController: UITableViewController {
         
         cell.lblId.text = "Patient ID: \(patient.id)"
         if let name = patient.deviceName {
-            cell.lblDevice.text = "Device: \(name)"
+            cell.lblDevice.text = "Device: \(name.replacingOccurrences(of: "vntlr-", with: ""))"
         } else {
             cell.lblDevice.text = "Device: -"
         }

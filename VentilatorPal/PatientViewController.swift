@@ -385,7 +385,7 @@ class PatientViewController: UITableViewController{
         sliderRR.value = Float(patientData.respiratoryRate)
 
         if let deviceName = deviceName {
-            lblDevice.text = deviceName
+            lblDevice.text = deviceName.replacingOccurrences(of: "vntlr-", with: "")
         }
     }
     
