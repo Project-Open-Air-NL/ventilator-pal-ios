@@ -21,6 +21,7 @@ class PatientTableViewCell: UITableViewCell {
     @IBOutlet weak var lblTv: UILabel!
     @IBOutlet weak var lblIe: UILabel!
     @IBOutlet weak var lblRr: UILabel!
+    @IBOutlet weak var btnEdit: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

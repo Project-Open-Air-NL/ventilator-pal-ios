@@ -90,17 +90,17 @@ class PatientsViewController: UITableViewController {
         cell.lblTv.text = "TV: \(patient.totalTvMl) ml"
         cell.lblIe.text = "I:E: \(VentilatorInterface.inhaleExhaleRatio[Int(patient.inhaleExhaleRatio)]!)"
         cell.lblRr.text = "RR: \(patient.respiratoryRate) p/m"
+        
+        cell.btnEdit.actionHandler(controlEvents: .touchUpInside) {
+            let vc = UIStoryboard.viewControllerForMainStoryboardWithOfClass(PatientViewController.self) as! PatientViewController
+            vc.patient = patient
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
 
         return cell
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "showPatient" {
-            let selectedIndex = self.tableView.indexPath(for: sender as! UITableViewCell)!
-            selectedPatient = patients[selectedIndex.section]
-            (segue.destination as! PatientViewController).patient = selectedPatient
-        }
-    }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
