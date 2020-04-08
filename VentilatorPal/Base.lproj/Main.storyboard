@@ -718,8 +718,9 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device: -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xsm-ke-hfB">
-                                            <rect key="frame" x="16" y="40" width="343" height="21"/>
+                                            <rect key="frame" x="16" y="40" width="100" height="21"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="75I-uO-KaC"/>
                                                 <constraint firstAttribute="height" constant="21" id="p70-xk-jgo"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -762,16 +763,22 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <state key="normal" title="Edit"/>
                                         </button>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Oys-vi-43X">
+                                            <rect key="frame" x="124" y="40.5" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="iHe-y8-XwZ"/>
+                                                <constraint firstAttribute="height" constant="20" id="sPn-Rq-u4K"/>
+                                            </constraints>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="bN0-Nb-o9D" secondAttribute="trailing" id="7ke-lt-I7L"/>
-                                        <constraint firstItem="xsm-ke-hfB" firstAttribute="leading" secondItem="ShK-79-Q2C" secondAttribute="leadingMargin" id="7z9-L0-7Qy"/>
                                         <constraint firstItem="bN0-Nb-o9D" firstAttribute="top" secondItem="ShK-79-Q2C" secondAttribute="top" id="82r-g4-vYE"/>
                                         <constraint firstItem="l7s-D6-CLJ" firstAttribute="leading" secondItem="ShK-79-Q2C" secondAttribute="leadingMargin" id="BQc-Cy-pcB"/>
                                         <constraint firstItem="3yl-Qx-U6N" firstAttribute="leading" secondItem="oct-5V-wkk" secondAttribute="trailing" constant="8" id="CAj-vU-rdb"/>
-                                        <constraint firstItem="xsm-ke-hfB" firstAttribute="trailing" secondItem="ShK-79-Q2C" secondAttribute="trailingMargin" id="Ci0-kh-UT6"/>
                                         <constraint firstItem="l7s-D6-CLJ" firstAttribute="top" secondItem="xsm-ke-hfB" secondAttribute="bottom" constant="8" id="G2Z-ny-cxE"/>
                                         <constraint firstItem="Hsi-sf-qKV" firstAttribute="trailing" secondItem="ShK-79-Q2C" secondAttribute="trailingMargin" id="MHp-0H-UJu"/>
+                                        <constraint firstItem="xsm-ke-hfB" firstAttribute="leading" secondItem="ShK-79-Q2C" secondAttribute="leadingMargin" id="RbU-A7-7eO"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="3yl-Qx-U6N" secondAttribute="trailing" constant="8" id="TGZ-Yg-nRl"/>
                                         <constraint firstItem="oct-5V-wkk" firstAttribute="top" secondItem="xsm-ke-hfB" secondAttribute="bottom" constant="8" id="U2e-z3-aLY"/>
                                         <constraint firstItem="oct-5V-wkk" firstAttribute="width" secondItem="l7s-D6-CLJ" secondAttribute="width" id="YDW-wG-4LW"/>
@@ -779,8 +786,10 @@
                                         <constraint firstItem="3yl-Qx-U6N" firstAttribute="width" secondItem="l7s-D6-CLJ" secondAttribute="width" id="ba7-aX-s5q"/>
                                         <constraint firstAttribute="bottom" secondItem="l7s-D6-CLJ" secondAttribute="bottom" constant="11" id="jfY-NM-kb0"/>
                                         <constraint firstItem="3yl-Qx-U6N" firstAttribute="top" secondItem="xsm-ke-hfB" secondAttribute="bottom" constant="8" id="kwW-fZ-wCf"/>
+                                        <constraint firstItem="Oys-vi-43X" firstAttribute="leading" secondItem="xsm-ke-hfB" secondAttribute="trailing" constant="8" id="lSZ-yk-Sqy"/>
                                         <constraint firstItem="Hsi-sf-qKV" firstAttribute="top" secondItem="ShK-79-Q2C" secondAttribute="topMargin" id="nfu-82-IXs"/>
                                         <constraint firstItem="Hsi-sf-qKV" firstAttribute="leading" secondItem="ShK-79-Q2C" secondAttribute="leadingMargin" id="nu1-Ef-Vmg"/>
+                                        <constraint firstItem="Oys-vi-43X" firstAttribute="centerY" secondItem="xsm-ke-hfB" secondAttribute="centerY" id="vc9-TJ-SI9"/>
                                         <constraint firstItem="oct-5V-wkk" firstAttribute="leading" secondItem="l7s-D6-CLJ" secondAttribute="trailing" constant="8" id="zq0-EI-Lz8"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -791,6 +800,7 @@
                                     <outlet property="lblIe" destination="oct-5V-wkk" id="anQ-un-aKA"/>
                                     <outlet property="lblRr" destination="3yl-Qx-U6N" id="Bya-L9-Vv0"/>
                                     <outlet property="lblTv" destination="l7s-D6-CLJ" id="5ne-Ic-sGv"/>
+                                    <outlet property="spinner" destination="Oys-vi-43X" id="AeR-qC-0IF"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

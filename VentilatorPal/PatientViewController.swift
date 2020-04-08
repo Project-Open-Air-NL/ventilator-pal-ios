@@ -55,7 +55,6 @@ class PatientViewController: UITableViewController{
                                                selector: #selector(self.receiveNotification(_:)),
                                                name: NSNotification.Name(rawValue: VentilatorInterface.DidConnect),
                                                object: nil)
-        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.receiveNotification(_:)),
                                                name: NSNotification.Name(rawValue: VentilatorInterface.IsConnecting),
@@ -107,14 +106,14 @@ class PatientViewController: UITableViewController{
         }
         patientData.updateCalcValues()
         
-        if let deviceAddress = self.deviceAddress {
-            VentilatorInterface.shared.connect(uuid: deviceAddress) { (success: Bool) in
-                if (success) {
-                    VentilatorInterface.shared.getSettings()
-                    VentilatorInterface.shared.disconnectWhenDone()
-                }
-            }
-        }
+//        if let deviceAddress = self.deviceAddress {
+//            VentilatorInterface.shared.connect(uuid: deviceAddress) { (success: Bool) in
+//                if (success) {
+//                    VentilatorInterface.shared.getSettings()
+//                    VentilatorInterface.shared.disconnectWhenDone()
+//                }
+//            }
+//        }
         
         if #available(iOS 13.0, *) {
             spinner.style = .medium
@@ -153,6 +152,8 @@ class PatientViewController: UITableViewController{
             spinner.isHidden = false
         } else if notification.name.rawValue == VentilatorInterface.DidDisconnect {
             lblStatus.text = ""
+            spinner.stopAnimating()
+            spinner.isHidden = true
         
         } else if notification.name.rawValue == VentilatorInterface.SettingsReceived {
             let settings = notification.object as! VentilatorInterface.Settings
@@ -179,7 +180,7 @@ class PatientViewController: UITableViewController{
                     self.deviceName = device.name
                     self.deviceAddress = device.identifier.uuidString
                     if let deviceName = self.deviceName {
-                        self.lblDevice.text = deviceName
+                        self.lblDevice.text = deviceName.replacingOccurrences(of: "vntlr-", with: "")
                     }
                     if let deviceAddress = self.deviceAddress {
                         VentilatorInterface.shared.connect(uuid: deviceAddress) { (success: Bool) in

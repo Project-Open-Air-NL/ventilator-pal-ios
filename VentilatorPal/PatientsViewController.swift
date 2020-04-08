@@ -14,14 +14,34 @@
 
 import UIKit
 import CoreStore
+import CoreBluetooth
 
 class PatientsViewController: UITableViewController {
 
     var patients = [Patient]()
     var selectedPatient: Patient?
     
+    var spinner: UIActivityIndicatorView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.receiveNotification(_:)),
+                                               name: NSNotification.Name(rawValue: VentilatorInterface.DidConnect),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.receiveNotification(_:)),
+                                               name: NSNotification.Name(rawValue: VentilatorInterface.IsConnecting),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.receiveNotification(_:)),
+                                               name: NSNotification.Name(rawValue: VentilatorInterface.DidDisconnect),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                              selector: #selector(self.receiveNotification(_:)),
+                                              name: NSNotification.Name(rawValue: VentilatorInterface.SettingsReceived),
+                                              object: nil)
         
         do {
             try CoreStore.addStorageAndWait()
@@ -58,6 +78,37 @@ class PatientsViewController: UITableViewController {
         UserDefaults.standard.setValue(0, forKey: "last_patient_selected")
     }
     
+    @objc private func receiveNotification (_ notification: Foundation.Notification) {
+        if notification.name.rawValue == VentilatorInterface.DidConnect {
+            spinner?.stopAnimating()
+            spinner?.isHidden = true
+        }
+        else if notification.name.rawValue == VentilatorInterface.IsConnecting {
+            spinner?.startAnimating()
+            spinner?.isHidden = false
+        } else if notification.name.rawValue == VentilatorInterface.DidDisconnect {
+            spinner?.stopAnimating()
+            spinner?.isHidden = true
+        
+        } else if notification.name.rawValue == VentilatorInterface.SettingsReceived {
+            let settings = notification.object as! VentilatorInterface.Settings
+            CoreStore.perform(
+                asynchronous: { (transaction) -> Void in
+                    if let patient = self.selectedPatient {
+                        let editPatient = transaction.edit(patient)!
+                        editPatient.tidalVolume = Int16(settings.tidalVolume)
+                        editPatient.inhaleExhaleRatio = Int16(settings.inhaleExhaleRatio)
+                        editPatient.respiratoryRate = Int16(settings.respiratoryRate)
+                    }
+                },
+                completion: { _ in
+                    self.updateData()
+                }
+            )
+            tableView.reloadData()
+        }
+    }
+    
     func updateData() {
         do {
            patients = try CoreStore.fetchAll(From<Patient>())
@@ -87,6 +138,7 @@ class PatientsViewController: UITableViewController {
         } else {
             cell.lblDevice.text = "Device: -"
         }
+        
         cell.lblTv.text = "TV: \(patient.totalTvMl) ml"
         cell.lblIe.text = "I:E: \(VentilatorInterface.inhaleExhaleRatio[Int(patient.inhaleExhaleRatio)]!)"
         cell.lblRr.text = "RR: \(patient.respiratoryRate) p/m"
@@ -95,12 +147,43 @@ class PatientsViewController: UITableViewController {
             let vc = UIStoryboard.viewControllerForMainStoryboardWithOfClass(PatientViewController.self) as! PatientViewController
             vc.patient = patient
             self.navigationController?.pushViewController(vc, animated: true)
+            self.spinner = nil
+            self.selectedPatient = nil
         }
+        
+        if #available(iOS 13.0, *) {
+            cell.spinner.style = .medium
+        } else {
+            cell.spinner.style = .gray
+        }
+        cell.spinner.isHidden = true
 
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = cell as! PatientTableViewCell
+        
+        cell.lblDevice.sizeToFit()
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let cell = tableView.cellForRow(at: indexPath) as! PatientTableViewCell
+        cell.spinner.isHidden = false
+        cell.spinner.startAnimating()
+        
+        spinner = cell.spinner
+        
+        selectedPatient = patients[indexPath.section]
+        if let deviceAddress = selectedPatient?.deviceAddress {
+            VentilatorInterface.shared.connect(uuid: deviceAddress) { (success: Bool) in
+                if (success) {
+                    VentilatorInterface.shared.getSettings()
+                    VentilatorInterface.shared.disconnectWhenDone()
+                }
+            }
+        }
     }
 }
