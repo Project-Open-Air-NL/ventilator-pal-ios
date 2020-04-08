@@ -160,6 +160,8 @@ class PatientViewController: UITableViewController{
             patientData.tidalVolume = Int(settings.tidalVolume)
             patientData.inhaleExhaleRatio = Int(settings.inhaleExhaleRatio)
             patientData.respiratoryRate = Int(settings.respiratoryRate)
+            patientData.gender = settings.gender
+            patientData.height = settings.height
             updateUI()
         } else if notification.name.rawValue == VentilatorInterface.FaultDetected {
             Message.alert(title: "Fault Detected", message: "VentilatorPal has an issue!")

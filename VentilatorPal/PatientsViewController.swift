@@ -99,6 +99,8 @@ class PatientsViewController: UITableViewController {
                         editPatient.tidalVolume = Int16(settings.tidalVolume)
                         editPatient.inhaleExhaleRatio = Int16(settings.inhaleExhaleRatio)
                         editPatient.respiratoryRate = Int16(settings.respiratoryRate)
+                        editPatient.gender = Int16(settings.gender.rawValue)
+                        editPatient.height = Int16(settings.height)
                     }
                 },
                 completion: { _ in
