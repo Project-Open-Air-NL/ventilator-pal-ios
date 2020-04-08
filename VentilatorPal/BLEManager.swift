@@ -167,7 +167,7 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         manager.stopScan()
         
         scanTimer?.invalidate()
-        scanTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(BLEManager.scanTimeout), userInfo: nil, repeats: true)
+        scanTimer = Timer.scheduledTimer(timeInterval: BLEConstants.scanInterval, target: self, selector: #selector(BLEManager.scanTimeout), userInfo: nil, repeats: true)
         
         scannedPeripherals.removeAll()
         rssiValues.removeAll()
@@ -183,7 +183,12 @@ class BLEManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     @objc func scanTimeout() {
         
-        if scannedPeripherals.count > 0 && cachedUUID == nil {
+        if cachedUUID != nil {
+            scanPeripherals()
+            return
+        }
+        
+        if scannedPeripherals.count > 0 {
             scannedPeripherals.sort(by: { rssiValues[$0.identifier.uuidString] > rssiValues[$1.identifier.uuidString] })
             
             delegate?.didDiscoverPeripherals(scannedPeripherals)

@@ -120,7 +120,7 @@ class VentilatorInterface: NSObject, BLEManagerDelegate {
                                         object: self,
                                         userInfo: nil)
         
-        connectTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { (_) in
+        connectTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: false) { (_) in
             self.connectCallback?(false)
         }
     }
